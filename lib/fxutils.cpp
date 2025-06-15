@@ -43,6 +43,24 @@
 #define INITIALMESSAGESIZE 512
 #endif
 
+// Maximum size for error messages (fixed size for stack allocation)
+#ifndef MAXMESSAGESIZE
+#define MAXMESSAGESIZE 1024
+#endif
+
+#ifndef IMAGE_SIZEOF_NT_OPTIONAL32_HEADER
+#define IMAGE_SIZEOF_NT_OPTIONAL32_HEADER    224
+#endif
+
+#ifndef IMAGE_SIZEOF_NT_OPTIONAL64_HEADER
+#define IMAGE_SIZEOF_NT_OPTIONAL64_HEADER    240
+#endif
+
+#ifdef _WIN64
+#define IMAGE_SIZEOF_NT_OPTIONAL_HEADER     IMAGE_SIZEOF_NT_OPTIONAL64_HEADER
+#else
+#define IMAGE_SIZEOF_NT_OPTIONAL_HEADER     IMAGE_SIZEOF_NT_OPTIONAL32_HEADER
+#endif
 using namespace FX;
 
 /*******************************************************************************/
@@ -180,29 +198,79 @@ void fxmessage(const FXchar* format,...){
 
 // Error routine
 void fxerror(const FXchar* format,...){
-  FXString message('\0',INITIALMESSAGESIZE);
+  char msg[MAXMESSAGESIZE];
   va_list arguments;
   va_start(arguments,format);
-  message.vformat(format,arguments);
+  _vsnprintf(msg,sizeof(msg),format,arguments);
   va_end(arguments);
-#if defined(WIN32)
-#if defined(_WINDOWS)
-  OutputDebugStringA(message.text());
-  fputs(message.text(),stderr);         // if a console is available
-  fflush(stderr);
-  MessageBoxA(nullptr,message.text(),nullptr,MB_OK|MB_ICONEXCLAMATION|MB_APPLMODAL);
+#ifdef WIN32
+#ifdef _WINDOWS
+  DWORD gle = GetLastError();
+  LPSTR gleMsg;
+  if (!FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+      NULL,
+      gle,
+      MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
+      (LPSTR) &gleMsg,
+      0,
+      NULL ))
+  {
+      gleMsg = NULL;
+  }
+  else
+  {
+      int len = strlen(gleMsg);
+      if (len > 0 && gleMsg[len - 1] == '\n')
+      {
+          gleMsg[--len] = '\0';
+      }
+      if (len > 0 && gleMsg[len - 1] == '\r')
+      {
+          gleMsg[--len] = '\0';
+      }
+  }
+
+  // try to load lc[a]env.dll
+#ifdef DEBUG
+  HMODULE hModule = LoadLibraryA("lcenv2d");
+#else
+  HMODULE hModule = LoadLibraryA("lcenv2");
+#endif
+  if (hModule)
+  {
+      typedef void (*PFN_WRITE_LOG)(const char*, int, const char*);
+      PFN_WRITE_LOG writeLog = reinterpret_cast<PFN_WRITE_LOG>(GetProcAddress(hModule, "writeLog"));
+      if (writeLog)
+      {
+          char buf[MAXMESSAGESIZE];
+          sprintf(buf, "0x%08x: %s", static_cast<unsigned int>(gle), gleMsg);
+          writeLog(__FILE__, __LINE__, msg);
+          writeLog(__FILE__, __LINE__, buf);
+          DebugBreak();
+      }
+  }
+
+  OutputDebugStringA(msg);
+  fprintf(stderr, "%s\nError Code: 0x%08x\n%s", msg, static_cast<unsigned int>(gle),
+          gleMsg);  // if a console is available
+  if (gleMsg)
+  {
+    LocalFree(gleMsg);
+  }
+  MessageBoxA(NULL,msg,NULL,MB_OK|MB_ICONEXCLAMATION|MB_APPLMODAL);
   DebugBreak();
 #else
-  fputs(message.text(),stderr);
+  fputs(msg,stderr);
   fflush(stderr);
   abort();
 #endif
 #else
-  fputs(message.text(),stderr);
+  fputs(msg,stderr);
   fflush(stderr);
   abort();
 #endif
   }
+
 
 
 // Warning routine
@@ -322,6 +390,8 @@ FXbool setTraceTopics(const FXchar* topics,FXbool flag){
         fillElms(&fxTopicArray[f],flag,t-f);
         }
       fxTopicArray[t]=flag;
+
+  // try to load lc[a]env.dll
       if(*topics!=',') break;
       topics++;
       }

@@ -62,6 +62,7 @@ protected:
   FXColor hiliteColor;  // Highlight color
   FXColor shadowColor;  // Shadow color
   FXColor borderColor;  // Border color
+  FXColor shadowColorSaved;
   FXint   padtop;       // Top padding
   FXint   padbottom;    // Bottom padding
   FXint   padleft;      // Left padding
@@ -81,6 +82,8 @@ private:
   FXFrame(const FXFrame&);
   FXFrame &operator=(const FXFrame&);
 public:
+  long onEnter(FXObject*,FXSelector,void*);
+  long onLeave(FXObject*,FXSelector,void*);
   long onPaint(FXObject*,FXSelector,void*);
 public:
 

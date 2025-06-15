@@ -58,6 +58,8 @@ namespace FX {
 
 // Map
 FXDEFMAP(FXFrame) FXFrameMap[]={
+  FXMAPFUNC(SEL_ENTER,0,FXFrame::onEnter),
+  FXMAPFUNC(SEL_LEAVE,0,FXFrame::onLeave),
   FXMAPFUNC(SEL_PAINT,0,FXFrame::onPaint),
   };
 
@@ -73,6 +75,7 @@ FXFrame::FXFrame(){
   hiliteColor=0;
   shadowColor=0;
   borderColor=0;
+  shadowColorSaved=shadowColor;
   border=0;
   }
 
@@ -85,6 +88,7 @@ FXFrame::FXFrame(FXComposite* p,FXuint opts,FXint x,FXint y,FXint w,FXint h,FXin
   hiliteColor=getApp()->getHiliteColor();
   shadowColor=getApp()->getShadowColor();
   borderColor=getApp()->getBorderColor();
+  shadowColorSaved=shadowColor;
   padtop=pt;
   padbottom=pb;
   padleft=pl;
@@ -227,6 +231,31 @@ void FXFrame::drawFrame(FXDCWindow& dc,FXint x,FXint y,FXint w,FXint h){
     }
   }
 
+// Handle enter event
+long FXFrame::onEnter(FXObject* sender, FXSelector sel, void* ptr)
+{
+  FXWindow::onEnter(sender,sel,ptr);
+
+  if(isEnabled() && target != NULL) {
+    shadowColor = borderColor;
+    update();
+  }
+  
+  return 1;
+}
+
+// Handle leave event
+long FXFrame::onLeave(FXObject* sender, FXSelector sel, void* ptr)
+{
+  FXWindow::onLeave(sender,sel,ptr);
+
+  if(isEnabled() && target != NULL) {
+    shadowColor = shadowColorSaved;
+    update();
+  }
+
+  return 1;
+}
 
 // Handle repaint
 long FXFrame::onPaint(FXObject*,FXSelector,void* ptr){
@@ -281,6 +310,7 @@ void FXFrame::setHiliteColor(FXColor clr){
 void FXFrame::setShadowColor(FXColor clr){
   if(clr!=shadowColor){
     shadowColor=clr;
+    shadowColorSaved=shadowColor;
     update();
     }
   }

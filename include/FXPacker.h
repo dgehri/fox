@@ -74,6 +74,8 @@ private:
   FXPacker(const FXPacker&);
   FXPacker &operator=(const FXPacker&);
 public:
+  long onEnter(FXObject*,FXSelector,void*);
+  long onLeave(FXObject*,FXSelector,void*);
   long onPaint(FXObject*,FXSelector,void*);
   long onFocusUp(FXObject*,FXSelector,void*);
   long onFocusDown(FXObject*,FXSelector,void*);

@@ -71,6 +71,8 @@ namespace FX {
 
 // Map
 FXDEFMAP(FXPacker) FXPackerMap[]={
+  FXMAPFUNC(SEL_ENTER,0,FXPacker::onEnter),
+  FXMAPFUNC(SEL_LEAVE,0,FXPacker::onLeave),
   FXMAPFUNC(SEL_PAINT,0,FXPacker::onPaint),
   FXMAPFUNC(SEL_FOCUS_UP,0,FXPacker::onFocusUp),
   FXMAPFUNC(SEL_FOCUS_DOWN,0,FXPacker::onFocusDown),
@@ -229,6 +231,31 @@ void FXPacker::drawFrame(FXDCWindow& dc,FXint x,FXint y,FXint w,FXint h){
     }
   }
 
+// Handle enter event
+long FXPacker::onEnter(FXObject* sender, FXSelector sel, void* ptr)
+{
+  FXComposite::onEnter(sender,sel,ptr);
+
+  if(isEnabled() && target != NULL)
+  {
+    setShadowColor(getApp()->getBorderColor());
+  }
+  
+  return 1;
+}
+
+// Handle leave event
+long FXPacker::onLeave(FXObject* sender, FXSelector sel, void* ptr)
+{
+  FXComposite::onLeave(sender,sel,ptr);
+
+  if(isEnabled() && target != NULL)
+  {
+    setShadowColor(getApp()->getShadowColor());
+  }
+
+  return 1;
+}
 
 // Handle repaint
 long FXPacker::onPaint(FXObject*,FXSelector,void* ptr){

@@ -252,7 +252,7 @@ FXbool FXRegistry::readFromRegistry(FXptr hroot,FXbool mrk){
 
 // Read from given group
 FXbool FXRegistry::readFromRegistryGroup(const FXString& group,FXptr hbase,FXbool mrk){
-  FXchar section[MAXNAME],name[MAXNAME],value[MAXVALUE];
+  WCHAR section[MAXNAME],name[MAXNAME],value[MAXVALUE];
   HKEY hgroup;
 
   // Open registry group
@@ -262,20 +262,20 @@ FXbool FXRegistry::readFromRegistryGroup(const FXString& group,FXptr hbase,FXboo
     FILETIME writetime;
 
     // Read sections
-    while(RegEnumKeyExA(hgroup,sectionindex,section,&sectionsize,nullptr,nullptr,nullptr,&writetime)==ERROR_SUCCESS){
+    while(RegEnumKeyExW(hgroup,sectionindex,section,&sectionsize,nullptr,nullptr,nullptr,&writetime)==ERROR_SUCCESS){
 
       // Open section
       HKEY hsection;
-      if(RegOpenKeyExA(hgroup,section,0,KEY_READ,&hsection)==ERROR_SUCCESS){
+      if(RegOpenKeyExW(hgroup,section,0,KEY_READ,&hsection)==ERROR_SUCCESS){
         DWORD namesize=MAXNAME;
         DWORD valuesize=MAXVALUE;
         DWORD index=0;
         DWORD type;
 
         // Read key-value pairs
-        while(RegEnumValueA(hsection,index,name,&namesize,nullptr,&type,(BYTE*)value,&valuesize)!=ERROR_NO_MORE_ITEMS){
+        while(RegEnumValueW(hsection,index,name,&namesize,nullptr,&type,(BYTE*)value,&valuesize)!=ERROR_NO_MORE_ITEMS){
           FXASSERT(type==REG_SZ);
-          at(section).at(name,mrk)=value;
+          at(section).at(name, mrk) = FXString(value, valuesize);
           namesize=MAXNAME;
           valuesize=MAXVALUE;
           index++;
@@ -347,6 +347,54 @@ FXbool FXRegistry::writeToRegistry(FXptr hroot){
   return ok;
   }
 
+bool utf8ToUtf16(const FXString& input, FXArray<WCHAR>& r)
+{
+    //
+    // Special case of NULL or empty input string
+    //
+    if (input.empty())
+    {
+        // Return empty string
+        r.clear();
+        return true;
+    }
+
+    //
+    // Get size of destination UTF-16 buffer, in WCHAR's
+    //
+    size_t tgtLen = ::MultiByteToWideChar(
+        CP_UTF8,                // convert from UTF-8
+        MB_ERR_INVALID_CHARS,   // error on invalid chars
+        input.text(),           // source UTF-8 string
+        static_cast<int>(input.length()) + 1,// total length of source UTF-8 string,
+        // in CHAR's (= bytes), including end-of-string \0
+        nullptr,                   // unused - no conversion done in this step
+        0                       // request size of destination buffer, in WCHAR's
+        );
+
+    if (tgtLen == 0)
+        return false;
+
+    r.no(tgtLen);
+
+    //
+    // Do the conversion from UTF-8 to UTF-16
+    //
+    auto tgtLen2 = ::MultiByteToWideChar(
+        CP_UTF8,                // convert from UTF-8
+        MB_ERR_INVALID_CHARS,   // error on invalid chars
+        input.text(),           // source UTF-8 string
+        static_cast<int>(input.length()) + 1,// total length of source UTF-8 string,
+        // in CHAR's (= bytes), including end-of-string \0
+        r.data(),                // destination buffer
+        static_cast<int>(tgtLen)             // size of destination buffer, in WCHAR's
+        );
+
+    if (tgtLen2 == 0)
+        return false;
+
+    return true;
+}
 
 // Write to registry group
 FXbool FXRegistry::writeToRegistryGroup(const FXString& group,FXptr hbase){
@@ -386,8 +434,18 @@ FXbool FXRegistry::writeToRegistryGroup(const FXString& group,FXptr hbase){
               }
 
             // Write key-value pair
-            if(RegSetValueExA(hsection,data(s).key(e).text(),0,REG_SZ,(BYTE*)data(s).data(e).text(),data(s).data(e).length()+1)!=ERROR_SUCCESS) break;
+            FXArray<WCHAR> key, value;
+            if (utf8ToUtf16(data(s).key(e).text(), key) && utf8ToUtf16(data(s).data(e).text(), value))
+            {
+                if (RegSetValueExW(hsection, key.data(), 0, REG_SZ, reinterpret_cast<const BYTE*>(value.data()), static_cast<DWORD>(value.no() * 2)) != ERROR_SUCCESS)
+                    break;
             }
+            else
+            {
+                if (RegSetValueExA(hsection, data(s).key(e).text(), 0, REG_SZ, reinterpret_cast<const BYTE*>(data(s).data(e).text()), data(s).data(e).length() + 1) != ERROR_SUCCESS)
+                    break;
+            }
+          }
           }
 
         // Close section
