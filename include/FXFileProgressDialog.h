@@ -60,7 +60,7 @@ public:
 public:
 
   /// Construct input dialog box with given caption, icon, and prompt text
-  FXFileProgressDialog(FXWindow* owner,const FXString& caption,const FXString& label,FXIcon* ico=nullptr,FXuint opts=DECOR_TITLE|DECOR_BORDER|DECOR_RESIZE,FXint x=0,FXint y=0,FXint w=0,FXint h=0);
+  FXFileProgressDialog(FXWindow* owner,const FXString& caption,const FXString& label,FXIcon* ico=nullptr,FXuint opts=static_cast<FXuint>(DECOR_TITLE)|static_cast<FXuint>(DECOR_BORDER|DECOR_RESIZE),FXint x=0,FXint y=0,FXint w=0,FXint h=0);
 
   /// Change the amount of progress
   void setProgress(FXuint value);

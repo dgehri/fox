@@ -53,10 +53,10 @@ public:
 public:
 
   /// Construct free-floating dialog
-  FXDialogBox(FXApp* a,const FXString& name,FXuint opts=DECOR_TITLE|DECOR_BORDER,FXint x=0,FXint y=0,FXint w=0,FXint h=0,FXint pl=10,FXint pr=10,FXint pt=10,FXint pb=10,FXint hs=4,FXint vs=4);
+  FXDialogBox(FXApp* a,const FXString& name,FXuint opts=static_cast<FXuint>(DECOR_TITLE)|static_cast<FXuint>(DECOR_BORDER),FXint x=0,FXint y=0,FXint w=0,FXint h=0,FXint pl=10,FXint pr=10,FXint pt=10,FXint pb=10,FXint hs=4,FXint vs=4);
 
   /// Construct dialog which will always float over the owner window
-  FXDialogBox(FXWindow* owner,const FXString& name,FXuint opts=DECOR_TITLE|DECOR_BORDER,FXint x=0,FXint y=0,FXint w=0,FXint h=0,FXint pl=10,FXint pr=10,FXint pt=10,FXint pb=10,FXint hs=4,FXint vs=4);
+  FXDialogBox(FXWindow* owner,const FXString& name,FXuint opts=static_cast<FXuint>(DECOR_TITLE)|static_cast<FXuint>(DECOR_BORDER),FXint x=0,FXint y=0,FXint w=0,FXint h=0,FXint pl=10,FXint pr=10,FXint pt=10,FXint pb=10,FXint hs=4,FXint vs=4);
 
   /**
   * Run modal invocation of the dialog.

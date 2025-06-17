@@ -56,7 +56,7 @@ public:
 public:
 
   /// Constructor
-  FXSeparator(FXComposite* p,FXuint opts=SEPARATOR_GROOVE|LAYOUT_FILL_X,FXint x=0,FXint y=0,FXint w=0,FXint h=0,FXint pl=0,FXint pr=0,FXint pt=0,FXint pb=0);
+  FXSeparator(FXComposite* p,FXuint opts=static_cast<FXuint>(SEPARATOR_GROOVE)|static_cast<FXuint>(LAYOUT_FILL_X),FXint x=0,FXint y=0,FXint w=0,FXint h=0,FXint pl=0,FXint pr=0,FXint pt=0,FXint pb=0);
 
   /// Return default width
   virtual FXint getDefaultWidth();
@@ -84,7 +84,7 @@ private:
 public:
 
   /// Constructor
-  FXHorizontalSeparator(FXComposite* p,FXuint opts=SEPARATOR_GROOVE|LAYOUT_FILL_X,FXint x=0,FXint y=0,FXint w=0,FXint h=0,FXint pl=1,FXint pr=1,FXint pt=0,FXint pb=0);
+  FXHorizontalSeparator(FXComposite* p,FXuint opts=static_cast<FXuint>(SEPARATOR_GROOVE)|static_cast<FXuint>(LAYOUT_FILL_X),FXint x=0,FXint y=0,FXint w=0,FXint h=0,FXint pl=1,FXint pr=1,FXint pt=0,FXint pb=0);
   };
 
 
@@ -100,7 +100,7 @@ private:
 public:
 
   /// Constructor
-  FXVerticalSeparator(FXComposite* p,FXuint opts=SEPARATOR_GROOVE|LAYOUT_FILL_Y,FXint x=0,FXint y=0,FXint w=0,FXint h=0,FXint pl=0,FXint pr=0,FXint pt=1,FXint pb=1);
+  FXVerticalSeparator(FXComposite* p,FXuint opts=static_cast<FXuint>(SEPARATOR_GROOVE)|static_cast<FXuint>(LAYOUT_FILL_Y),FXint x=0,FXint y=0,FXint w=0,FXint h=0,FXint pl=0,FXint pr=0,FXint pt=1,FXint pb=1);
   };
 
 }

@@ -73,7 +73,7 @@ public:
 public:
 
   /// Construct a Directory Box
-  FXDirBox(FXComposite *p,FXObject* tgt=nullptr,FXSelector sel=0,FXuint opts=FRAME_SUNKEN|FRAME_THICK|TREELISTBOX_NORMAL,FXint x=0,FXint y=0,FXint w=0,FXint h=0,FXint pl=DEFAULT_PAD,FXint pr=DEFAULT_PAD,FXint pt=DEFAULT_PAD,FXint pb=DEFAULT_PAD);
+  FXDirBox(FXComposite *p,FXObject* tgt=nullptr,FXSelector sel=0,FXuint opts=static_cast<FXuint>(FRAME_SUNKEN)|static_cast<FXuint>(FRAME_THICK)|static_cast<FXuint>(TREELISTBOX_NORMAL),FXint x=0,FXint y=0,FXint w=0,FXint h=0,FXint pl=DEFAULT_PAD,FXint pr=DEFAULT_PAD,FXint pt=DEFAULT_PAD,FXint pb=DEFAULT_PAD);
 
   /// Create server-side resources
   virtual void create();

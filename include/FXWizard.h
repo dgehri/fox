@@ -76,10 +76,10 @@ public:
 public:
 
   /// Construct free-floating Wizard
-  FXWizard(FXApp* a,const FXString& name,FXImage *image,FXuint opts=DECOR_TITLE|DECOR_BORDER|DECOR_RESIZE,FXint x=0,FXint y=0,FXint w=0,FXint h=0,FXint pl=10,FXint pr=10,FXint pt=10,FXint pb=10,FXint hs=10,FXint vs=10);
+  FXWizard(FXApp* a,const FXString& name,FXImage *image,FXuint opts=static_cast<FXuint>(DECOR_TITLE)|static_cast<FXuint>(DECOR_BORDER|DECOR_RESIZE),FXint x=0,FXint y=0,FXint w=0,FXint h=0,FXint pl=10,FXint pr=10,FXint pt=10,FXint pb=10,FXint hs=10,FXint vs=10);
 
   /// Construct Wizard which will always float over the owner window
-  FXWizard(FXWindow* owner,const FXString& name,FXImage *image,FXuint opts=DECOR_TITLE|DECOR_BORDER|DECOR_RESIZE,FXint x=0,FXint y=0,FXint w=0,FXint h=0,FXint pl=10,FXint pr=10,FXint pt=10,FXint pb=10,FXint hs=10,FXint vs=10);
+  FXWizard(FXWindow* owner,const FXString& name,FXImage *image,FXuint opts=static_cast<FXuint>(DECOR_TITLE)|static_cast<FXuint>(DECOR_BORDER|DECOR_RESIZE),FXint x=0,FXint y=0,FXint w=0,FXint h=0,FXint pl=10,FXint pr=10,FXint pt=10,FXint pb=10,FXint hs=10,FXint vs=10);
 
   /// Return a pointer to the button frame
   FXHorizontalFrame *buttonFrame() const { return buttons; }

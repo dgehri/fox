@@ -32,7 +32,7 @@ namespace FX {
 enum {
   RADIOBUTTON_AUTOGRAY = 0x00800000,  /// Automatically gray out when not updated
   RADIOBUTTON_AUTOHIDE = 0x01000000,  /// Automatically hide when not updated
-  RADIOBUTTON_NORMAL   = JUSTIFY_NORMAL|ICON_BEFORE_TEXT
+  RADIOBUTTON_NORMAL   = static_cast<FXuint>(JUSTIFY_NORMAL)|static_cast<FXuint>(ICON_BEFORE_TEXT)
   };
 
 

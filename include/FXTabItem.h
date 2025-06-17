@@ -34,10 +34,10 @@ enum {
   TAB_LEFT         = 0x00800000,  // Left side tabs
   TAB_RIGHT        = 0x01000000,  // Right side tabs
   TAB_BOTTOM       = 0x01800000,  // Bottom side tabs
-  TAB_TOP_NORMAL   = JUSTIFY_NORMAL|ICON_BEFORE_TEXT|TAB_TOP|FRAME_RAISED|FRAME_THICK,
-  TAB_BOTTOM_NORMAL= JUSTIFY_NORMAL|ICON_BEFORE_TEXT|TAB_BOTTOM|FRAME_RAISED|FRAME_THICK,
-  TAB_LEFT_NORMAL  = JUSTIFY_LEFT|JUSTIFY_CENTER_Y|ICON_BEFORE_TEXT|TAB_LEFT|FRAME_RAISED|FRAME_THICK,
-  TAB_RIGHT_NORMAL = JUSTIFY_LEFT|JUSTIFY_CENTER_Y|ICON_BEFORE_TEXT|TAB_RIGHT|FRAME_RAISED|FRAME_THICK
+  TAB_TOP_NORMAL   = static_cast<FXuint>(JUSTIFY_NORMAL)|static_cast<FXuint>(ICON_BEFORE_TEXT)|static_cast<FXuint>(TAB_TOP)|static_cast<FXuint>(FRAME_RAISED)|static_cast<FXuint>(FRAME_THICK),
+  TAB_BOTTOM_NORMAL= static_cast<FXuint>(JUSTIFY_NORMAL)|static_cast<FXuint>(ICON_BEFORE_TEXT)|static_cast<FXuint>(TAB_BOTTOM)|static_cast<FXuint>(FRAME_RAISED)|static_cast<FXuint>(FRAME_THICK),
+  TAB_LEFT_NORMAL  = static_cast<FXuint>(JUSTIFY_LEFT)|static_cast<FXuint>(JUSTIFY_CENTER_Y)|static_cast<FXuint>(ICON_BEFORE_TEXT)|static_cast<FXuint>(TAB_LEFT)|static_cast<FXuint>(FRAME_RAISED)|static_cast<FXuint>(FRAME_THICK),
+  TAB_RIGHT_NORMAL = static_cast<FXuint>(JUSTIFY_LEFT)|static_cast<FXuint>(JUSTIFY_CENTER_Y)|static_cast<FXuint>(ICON_BEFORE_TEXT)|static_cast<FXuint>(TAB_RIGHT)|static_cast<FXuint>(FRAME_RAISED)|static_cast<FXuint>(FRAME_THICK)
   };
 
 

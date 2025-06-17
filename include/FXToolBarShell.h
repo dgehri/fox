@@ -94,7 +94,7 @@ public:
 public:
 
   /// Construct a toolbar shell
-  FXToolBarShell(FXWindow* owner,FXuint opts=FRAME_RAISED|FRAME_THICK,FXint x=0,FXint y=0,FXint w=0,FXint h=0,FXint hs=4,FXint vs=4);
+  FXToolBarShell(FXWindow* owner,FXuint opts=static_cast<FXuint>(FRAME_RAISED)|static_cast<FXuint>(FRAME_THICK),FXint x=0,FXint y=0,FXint w=0,FXint h=0,FXint hs=4,FXint vs=4);
 
   /// Create server-side resources
   virtual void create();

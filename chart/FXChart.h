@@ -77,7 +77,7 @@ public:
 public:
 
   /// Construct chart widget
-  FXChart(FXComposite* p,FXObject* tgt=nullptr,FXSelector sel=0,FXuint opts=CAPTION_ABOVE|CAPTION_SHOWN,FXint x=0,FXint y=0,FXint w=0,FXint h=0,FXint pl=4,FXint pr=4,FXint pt=4,FXint pb=4);
+  FXChart(FXComposite* p,FXObject* tgt=nullptr,FXSelector sel=0,FXuint opts=static_cast<FXuint>(CAPTION_ABOVE)|static_cast<FXuint>(CAPTION_SHOWN),FXint x=0,FXint y=0,FXint w=0,FXint h=0,FXint pl=4,FXint pr=4,FXint pt=4,FXint pb=4);
 
   /// Create server-side resources
   virtual void create();

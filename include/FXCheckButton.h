@@ -33,7 +33,7 @@ enum {
   CHECKBUTTON_AUTOGRAY = 0x00800000,    /// Automatically gray out when not updated
   CHECKBUTTON_AUTOHIDE = 0x01000000,    /// Automatically hide when not updated
   CHECKBUTTON_PLUS     = 0x02000000,    /// Draw a + for unchecked and - for checked
-  CHECKBUTTON_NORMAL   = JUSTIFY_NORMAL|ICON_BEFORE_TEXT
+  CHECKBUTTON_NORMAL   = static_cast<FXuint>(JUSTIFY_NORMAL)|static_cast<FXuint>(ICON_BEFORE_TEXT)
   };
 
 

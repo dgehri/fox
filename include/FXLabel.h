@@ -45,7 +45,7 @@ enum {
 
 /// Normal way to show label
 enum {
-  LABEL_NORMAL         = JUSTIFY_NORMAL|ICON_BEFORE_TEXT
+  LABEL_NORMAL         = static_cast<FXuint>(JUSTIFY_NORMAL)|static_cast<FXuint>(ICON_BEFORE_TEXT)
   };
 
 

@@ -63,7 +63,7 @@ public:
 public:
 
   /// Constructor
-  FXDriveBox(FXComposite *p,FXObject* tgt=nullptr,FXSelector sel=0,FXuint opts=FRAME_SUNKEN|FRAME_THICK|LISTBOX_NORMAL,FXint x=0,FXint y=0,FXint w=0,FXint h=0,FXint pl=DEFAULT_PAD,FXint pr=DEFAULT_PAD,FXint pt=DEFAULT_PAD,FXint pb=DEFAULT_PAD);
+  FXDriveBox(FXComposite *p,FXObject* tgt=nullptr,FXSelector sel=0,FXuint opts=static_cast<FXuint>(FRAME_SUNKEN)|static_cast<FXuint>(FRAME_THICK)|static_cast<FXuint>(LISTBOX_NORMAL),FXint x=0,FXint y=0,FXint w=0,FXint h=0,FXint pl=DEFAULT_PAD,FXint pr=DEFAULT_PAD,FXint pt=DEFAULT_PAD,FXint pb=DEFAULT_PAD);
 
   /// Create server-side resources
   virtual void create();
